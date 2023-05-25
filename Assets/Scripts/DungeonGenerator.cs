@@ -25,9 +25,11 @@ public class DungeonGenerator : MonoBehaviour {
     void GenerateDungeon() {
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
-                //Cell current = board[i + j * size.x];
-                var newRoom = Instantiate(room, new Vector3(i * offset.x, 0, j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
-                newRoom.UpdateRoom(board[i + j * size.x].status);
+                Cell current = board[i + j * size.x];
+                if (current.visited) { 
+                    var newRoom = Instantiate(room, new Vector3(i * offset.x, 0, j * offset.y), Quaternion.identity, transform).GetComponent<RoomBehaviour>();
+                    newRoom.UpdateRoom(board[i + j * size.x].status);
+                }
             }
         }
     }
@@ -95,7 +97,6 @@ public class DungeonGenerator : MonoBehaviour {
         if (cell - size.x >= 0 && !board[(cell - size.x)].visited) {
             adjacent.Add(cell - size.x);
         }
-
 
         if (cell + size.x < board.Count && !board[cell + size.x].visited) {
             adjacent.Add((cell + size.x));
